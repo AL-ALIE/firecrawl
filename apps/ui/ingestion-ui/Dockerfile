@@ -13,14 +13,14 @@ RUN npm install
 # Copy the rest of your application files
 COPY . .
 
-# Ensure the build directory exists before copying
+# Debug: List files before build
 RUN ls -la /app
 
-# Build the React application
+# Build the React application (Vite outputs to `dist/`)
 RUN npm run build
 
-# Debug: Check if build directory exists
-RUN ls -la /app/build
+# Debug: Check if `dist/` folder exists
+RUN ls -la /app/dist
 
 # Stage 2: Serve the React application using Node.js
 FROM node:18-alpine AS production
@@ -28,11 +28,8 @@ FROM node:18-alpine AS production
 # Set the working directory inside the container
 WORKDIR /app
 
-# Ensure the build directory exists before copying
-RUN ls -la /app
-
 # Copy the built React application from the previous stage
-COPY --from=build /app/build ./build
+COPY --from=build /app/dist ./dist
 
 # Install a simple static file server
 RUN npm install -g serve
@@ -41,4 +38,4 @@ RUN npm install -g serve
 EXPOSE 3003
 
 # Start the application using "serve"
-CMD ["serve", "-s", "build", "-l", "3003"]
+CMD ["serve", "-s", "dist", "-l", "3003"]
