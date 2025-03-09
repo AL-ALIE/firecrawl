@@ -58,18 +58,19 @@ services:
       - backend
 
 
+  services:
   ingestion-ui:
     build: ./apps/ui/ingestion-ui
     environment:
       HOST: "0.0.0.0"
       PORT: 3003
-      # Add other necessary environment variables here
     depends_on:
       - api
     ports:
       - "3003:3003"
     networks:
       - backend
+
 
   api:
     <<: *common-service
