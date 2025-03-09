@@ -58,7 +58,6 @@ services:
       - backend
 
 
-  services:
   ingestion-ui:
     build: ./apps/ui/ingestion-ui
     environment:
